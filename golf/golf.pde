@@ -1,7 +1,6 @@
-int genesw;
+int genesw,holdStart=1,shot,charge,coll;
 float resist=0.999,e=0.8,f=0.99;
-float x=160,y=310,r=20,vx=0,vy=0,ax=0,ay=0.02,pv,ox,oy,pox,poy,m,cx,cy,angleVelo,angleColl,angleRef,angleShot,vm,am,dist,mxFirst,myFirst,power;
-Boolean holdStart=true,shot=false,charge=false,coll=false;
+float x=90,y=480,r=10,vx=0,vy=0,ax=0,ay=0.02,pv,ox,oy,pox,poy,m,cx,cy,angleVelo,angleColl,angleRef,angleShot,vm,am,dist,mxFirst,myFirst,power;
 PFont hel=createFont("Helvetica Neue",12);
 PFont helb=createFont("Helvetica Neue",128);
 
@@ -12,7 +11,7 @@ AudioPlayer soundBounce,soundSmash,soundDead,soundScore;
   
 void setup(){
   
-  size(1280,720);
+  size(640,640);
   frameRate(320);
   
   minim = new Minim(this);
@@ -31,80 +30,96 @@ void draw(){
   x=x+vx;
   y=y+vy;
   
+  if(vx==0){angleVelo=PI/2;}
+  else{angleVelo=atan(vy/vx);}
+  if(angleVelo<0){angleVelo=angleVelo+PI;}
+  if(vy>0){angleVelo=angleVelo+PI;}
+  
   if(mousePressed==true){
-    if(holdStart==true){
+    if(holdStart==1){
       mxFirst=mouseX;
       myFirst=mouseY;
-      holdStart=false;
+      holdStart=0;
     }
-    charge=true;
-    power=sqrt(sq(mxFirst-mouseX)+sq(myFirst-mouseY));
-    if(charge==true){
-      stroke(255,255,255);
+    charge=1;
+    if(charge==1){
+      power=sqrt(sq(mxFirst-mouseX)+sq(myFirst-mouseY));
+      if(power>200){power=200;}
+      if(mxFirst==mouseX){angleShot=PI/2;}
+      else{angleShot=atan((myFirst-mouseY)/(mxFirst-mouseX));}
+      if(angleShot<0){angleShot+=PI;}
+      if(mouseY>myFirst){angleShot+=PI;}
+      if(angleShot==0&mouseX>mxFirst){angleShot=PI;}
+      stroke(255);
       strokeWeight(2);
       noFill();
-      line(mxFirst,myFirst,mouseX,mouseY);
-      ellipse(mxFirst,myFirst,power*2,power*2);
+      line(x,y,x-power*cos(angleShot),y-power*sin(angleShot));
+      ellipse(x,y,power*2,power*2);
+      for(int cnt=0;cnt<6;cnt++){
+        stroke(255,255-cnt*32);
+        line(x+(15+cnt*10)*cos(angleShot),y+(15+cnt*10)*sin(angleShot),x+(20+cnt*10)*cos(angleShot),y+(20+cnt*10)*sin(angleShot));
+      }
     }
   }else{
-    if(charge==true){
-      shot=true;
-      charge=false;
+    if(charge==1){
+      shot=1;
+      charge=0;
     }
   }
   
-  if(shot==true){
-    if(mxFirst==mouseX){angleShot=PI/2;}
-    else{angleShot=atan((myFirst-mouseY)/(mxFirst-mouseX));}
-    if(angleShot<0){angleShot+=PI;}
-    if(mouseY>myFirst){angleShot+=PI;}
-    
-    vx=power*cos(angleShot)*0.1;
-    vy=power*sin(angleShot)*0.1;
+  if(shot==1){
+    vx=power*cos(angleShot)*0.03;
+    vy=power*sin(angleShot)*0.03;
     soundBounce.rewind();
     soundBounce.play();
     soundSmash.rewind();
     soundSmash.play();
-    shot=false;
-    holdStart=true;
+    holdStart=1;
   }
-
-/*  
-  if(r>sqrt(sq(x-ox)+sq(y-oy))){
-    pv=sqrt(sq(vx)+sq(vy));
-    if(vx==0){angleVelo=PI/2;}else{angleVelo=atan(vy/vx);}
-    if(angleVelo<0){angleVelo=angleVelo+PI;}
-    if(vy>0){angleVelo=angleVelo+PI;}
-    angleColl=atan((y-oy)/(x-ox));
-    if(angleColl<0){angleColl=angleColl+PI;}
-    angleRef=angleColl*2-angleVelo;
-    vx=pv*cos(angleRef)-vm*cos(am)*0.5;
-    vy=pv*sin(angleRef)-vm*sin(am)*0.5;
-    cx=ox;cy=oy;
-    
-    soundBounce.rewind();
-    soundBounce.play();
-    soundSmash.rewind();
-    soundSmash.play();
-  }
-*/
   
-  groundSolidRect(100,100,100,100);
-    
-  if(r>x-0){x=r;vx*=-e;coll=true;}
-  if(r>width-x){x=width-r;vx*=-e;coll=true;}
-  if(r>y-0){y=r;vy*=-e;coll=true;}
-  if(r>height-y){y=height-r;vy*=-e;coll=true;}
+  groundSolidRect(-100,-100,840,120,0,0,0,0);
+  groundSolidRect(-100,620,840,120,0,0,0,0);
+  groundSolidRect(-100,-100,120,840,0,0,0,0);
+  groundSolidRect(620,-100,120,840,0,0,0,0);
   
-  if(coll==true){
+  groundSolidRect(320,320,80,80,1,1,1,0);
+  groundSolidRect(480,320,80,80,1,0,1,1);
+  groundSolidRect(320,360,240,40,0,0,0,0);
+  
+  groundSolidRect(160,240,40,240,1,1,1,0);
+  groundSolidRect(160,440,80,40,0,1,1,1);
+  
+  groundSolidRect(80,80,80,20,1,0,1,1);
+  groundSolidRect(80,120,80,20,0,0,1,1);
+  groundSolidRect(80,80,20,80,1,1,0,1);
+  
+  groundSolidRect(180,80,80,20,1,0,1,0);
+  groundSolidRect(180,80,20,80,1,1,0,1);
+  groundSolidRect(220,80,20,80,0,1,0,1);
+  groundSolidRect(260,100,20,60,0,1,1,1);
+  
+  groundSolidRect(340,80,60,20,1,0,1,1);
+  groundSolidRect(300,140,60,20,1,1,0,1);
+  groundSolidRect(340,80,20,80,1,0,0,1);
+  
+  if(coll==1&shot==0){
     vx*=f;vy*=f;
-    if(sqrt(sq(vx)+sq(vy))<0.1){
+    pv=sqrt(sq(vx)+sq(vy));
+    angleRef=angleColl*2-angleVelo;
+    vx=pv*cos(angleRef)*(1-abs(cos(angleColl))*(1-e));
+    vy=pv*sin(angleRef)*(1-abs(sin(angleColl))*(1-e));
+    if(pv<0.1){
       vx=0;
       vy=0;
     }
-    coll=false;
+    if(abs(cos(angleColl)*vx)+abs(sin(angleColl)*vy)>0.1){
+      soundBounce.rewind();
+      soundBounce.play();
+    }
+    coll=0;
   }
   
+  shot=0;
   vx*=resist;vy*=resist;
   
   noStroke();
@@ -117,8 +132,6 @@ void draw(){
   textAlign(LEFT,TOP);
   text("x = "+round(x)+" , y = "+round(y),5,0);
   text("Velocity = "+float(round(sqrt(sq(vx)+sq(vy))*100))/100,5,10);
-  
-  println(angleShot);
 }
 
 void stop(){
@@ -128,11 +141,4 @@ void stop(){
   soundScore.close();
   minim.stop();
   super.stop();
-}
-
-void groundSolidRect(int x,int y,int wid,int hei){
-  
-  noStroke();
-  fill(#FFFFFF);
-  rect(x,y,wid,hei);
 }
