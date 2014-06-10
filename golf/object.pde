@@ -11,8 +11,9 @@ void groundSolidRect(int objx,int objy,int objwid,int objhei,int objkado0,int ob
       if(x-objx-objwid*(cnt/2)==0){angleColl=PI/2;}
       else{angleColl=atan((y-objy-objhei*(cnt%2))/(x-objx-objwid*(cnt/2)));}
       if(angleColl<0){angleColl+=PI;}
-      x+=2*(cnt/2)-1;
-      y+=2*(cnt%2)-1;
+      if(y-objy-objhei*(cnt%2)<0){angleColl+=PI;}
+      x=objx+objwid*(cnt/2)+cos(angleColl)*r;
+      y=objy+objhei*(cnt%2)+sin(angleColl)*r;
       coll=1;
     }
   }

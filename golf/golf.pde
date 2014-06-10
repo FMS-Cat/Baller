@@ -50,15 +50,6 @@ void draw(){
       if(angleShot<0){angleShot+=PI;}
       if(mouseY>myFirst){angleShot+=PI;}
       if(angleShot==0&mouseX>mxFirst){angleShot=PI;}
-      stroke(255);
-      strokeWeight(2);
-      noFill();
-      line(x,y,x-power*cos(angleShot),y-power*sin(angleShot));
-      ellipse(x,y,power*2,power*2);
-      for(int cnt=0;cnt<6;cnt++){
-        stroke(255,255-cnt*32);
-        line(x+(15+cnt*10)*cos(angleShot),y+(15+cnt*10)*sin(angleShot),x+(20+cnt*10)*cos(angleShot),y+(20+cnt*10)*sin(angleShot));
-      }
     }
   }else{
     if(charge==1){
@@ -77,34 +68,7 @@ void draw(){
     holdStart=1;
   }
   
-  groundSolidRect(-100,-100,840,120,0,0,0,0);
-  groundSolidRect(-100,620,840,120,0,0,0,0);
-  groundSolidRect(-100,-100,120,840,0,0,0,0);
-  groundSolidRect(620,-100,120,840,0,0,0,0);
-  
-  groundSolidRect(320,320,80,80,1,1,1,0);
-  groundSolidRect(480,320,80,80,1,0,1,1);
-  groundSolidRect(320,360,240,40,0,0,0,0);
-  
-  groundSolidRect(160,240,40,240,1,1,1,0);
-  groundSolidRect(160,440,80,40,0,1,1,1);
-  
-  groundSolidRect(80,80,80,20,1,0,1,1);
-  groundSolidRect(80,120,80,20,0,0,1,1);
-  groundSolidRect(80,80,20,80,1,1,0,1);
-  
-  groundSolidRect(200,80,80,20,1,0,1,0);
-  groundSolidRect(200,80,20,80,1,1,0,1);
-  groundSolidRect(240,80,20,80,0,1,0,1);
-  groundSolidRect(280,100,20,60,0,1,1,1);
-  
-  groundSolidRect(380,80,60,20,1,0,1,1);
-  groundSolidRect(340,140,60,20,1,1,0,1);
-  groundSolidRect(380,80,20,80,1,0,0,1);
-  
-  groundSolidRect(480,480,20,20,1,1,1,1);
-  groundSolidRect(520,500,20,20,1,1,1,1);
-  groundSolidRect(480,520,20,20,1,1,1,1);
+  stage(0);
   
   if(coll==1){
     if(shot==0){  
@@ -121,6 +85,7 @@ void draw(){
         soundBounce.rewind();
         soundBounce.play();
       }
+      println(angleColl);
     }
     coll=0;
   }
@@ -128,8 +93,30 @@ void draw(){
   shot=0;
   vx*=resist;vy*=resist;
   
+  if(charge==1){
+    stroke(51,153,153);
+    strokeWeight(6);
+    noFill();
+    line(x,y,x-power*cos(angleShot),y-power*sin(angleShot));
+    ellipse(x,y,power*2,power*2);
+    stroke(255);
+    strokeWeight(2);
+    noFill();
+    line(x,y,x-power*cos(angleShot),y-power*sin(angleShot));
+    ellipse(x,y,power*2,power*2);
+    for(int cnt=0;cnt<6;cnt++){
+      noStroke();
+      fill(51,153,153,255-cnt*32);
+      ellipse(x+(r+8+cnt*10)*cos(angleShot),y+(r+8+cnt*10)*sin(angleShot),8,8);
+      fill(255,255-cnt*32);
+      ellipse(x+(r+8+cnt*10)*cos(angleShot),y+(r+8+cnt*10)*sin(angleShot),4,4);
+    }
+  }
+  
   noStroke();
-  fill(255,255,255,255);
+  fill(51,153,153);
+  ellipse(x,y,r*2+4,r*2+4);
+  fill(255);
   ellipse(x,y,r*2,r*2);
   
   fill(255,255,255,255);
