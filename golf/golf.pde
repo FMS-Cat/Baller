@@ -93,28 +93,34 @@ void draw(){
   groundSolidRect(80,120,80,20,0,0,1,1);
   groundSolidRect(80,80,20,80,1,1,0,1);
   
-  groundSolidRect(180,80,80,20,1,0,1,0);
-  groundSolidRect(180,80,20,80,1,1,0,1);
-  groundSolidRect(220,80,20,80,0,1,0,1);
-  groundSolidRect(260,100,20,60,0,1,1,1);
+  groundSolidRect(200,80,80,20,1,0,1,0);
+  groundSolidRect(200,80,20,80,1,1,0,1);
+  groundSolidRect(240,80,20,80,0,1,0,1);
+  groundSolidRect(280,100,20,60,0,1,1,1);
   
-  groundSolidRect(340,80,60,20,1,0,1,1);
-  groundSolidRect(300,140,60,20,1,1,0,1);
-  groundSolidRect(340,80,20,80,1,0,0,1);
+  groundSolidRect(380,80,60,20,1,0,1,1);
+  groundSolidRect(340,140,60,20,1,1,0,1);
+  groundSolidRect(380,80,20,80,1,0,0,1);
   
-  if(coll==1&shot==0){
-    vx*=f;vy*=f;
-    pv=sqrt(sq(vx)+sq(vy));
-    angleRef=angleColl*2-angleVelo;
-    vx=pv*cos(angleRef)*(1-abs(cos(angleColl))*(1-e));
-    vy=pv*sin(angleRef)*(1-abs(sin(angleColl))*(1-e));
-    if(pv<0.1){
-      vx=0;
-      vy=0;
-    }
-    if(abs(cos(angleColl)*vx)+abs(sin(angleColl)*vy)>0.1){
-      soundBounce.rewind();
-      soundBounce.play();
+  groundSolidRect(480,480,20,20,1,1,1,1);
+  groundSolidRect(520,500,20,20,1,1,1,1);
+  groundSolidRect(480,520,20,20,1,1,1,1);
+  
+  if(coll==1){
+    if(shot==0){  
+      vx*=f;vy*=f;
+      pv=sqrt(sq(vx)+sq(vy));
+      angleRef=angleColl*2-angleVelo;
+      vx=pv*cos(angleRef)*(1-abs(cos(angleColl))*(1-e));
+      vy=pv*sin(angleRef)*(1-abs(sin(angleColl))*(1-e));
+      if(pv<0.1){
+        vx=0;
+        vy=0;
+      }
+      if(abs(cos(angleColl)*vx)+abs(sin(angleColl)*vy)>0.1){
+        soundBounce.rewind();
+        soundBounce.play();
+      }
     }
     coll=0;
   }
@@ -130,8 +136,8 @@ void draw(){
   noStroke();
   textFont(hel);
   textAlign(LEFT,TOP);
-  text("x = "+round(x)+" , y = "+round(y),5,0);
-  text("Velocity = "+float(round(sqrt(sq(vx)+sq(vy))*100))/100,5,10);
+  text("x = "+round(x)+" , y = "+round(y),25,20);
+  text("Velocity = "+float(round(sqrt(sq(vx)+sq(vy))*100))/100,25,30);
 }
 
 void stop(){
