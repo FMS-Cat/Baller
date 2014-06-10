@@ -97,12 +97,12 @@ void draw(){
     stroke(51,153,153);
     strokeWeight(6);
     noFill();
-    line(x,y,x-power*cos(angleShot),y-power*sin(angleShot));
+    line(x,y,x-(power-1)*cos(angleShot),y-(power-1)*sin(angleShot));
     ellipse(x,y,power*2,power*2);
     stroke(255);
     strokeWeight(2);
     noFill();
-    line(x,y,x-power*cos(angleShot),y-power*sin(angleShot));
+    line(x,y,x-(power-1)*cos(angleShot),y-(power-1)*sin(angleShot));
     ellipse(x,y,power*2,power*2);
     for(int cnt=0;cnt<6;cnt++){
       noStroke();
