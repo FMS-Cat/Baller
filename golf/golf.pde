@@ -1,6 +1,6 @@
-int genesw,holdStart=1,shot,charge,coll;
+int avail=1,genesw,holdStart=1,shot,charge,coll,edge,start=1,goal,gameover,stageSel;
 float resist=0.999,e=0.8,f=0.99;
-float x=90,y=480,r=10,vx=0,vy=0,ax=0,ay=0.02,pv,ox,oy,pox,poy,m,cx,cy,angleVelo,angleColl,angleRef,angleShot,vm,am,dist,mxFirst,myFirst,power;
+float x,y,r=10,vx=0,vy=0,ax=0,ay=0.02,pv,ox,oy,pox,poy,m,cx,cy,angleVelo,angleColl,angleRef,angleShot,vm,am,dist,mxFirst,myFirst,power,glow,FX=1,xStop,yStop;
 PFont hel=createFont("Helvetica Neue",12);
 PFont helb=createFont("Helvetica Neue",128);
 
@@ -19,6 +19,7 @@ void setup(){
   soundSmash=minim.loadFile("smash.wav");
   soundDead=minim.loadFile("dead.wav");
   soundScore=minim.loadFile("score.wav");
+  
 }
 
 void draw(){
@@ -30,12 +31,9 @@ void draw(){
   x=x+vx;
   y=y+vy;
   
-  if(vx==0){angleVelo=PI/2;}
-  else{angleVelo=atan(vy/vx);}
-  if(angleVelo<0){angleVelo=angleVelo+PI;}
-  if(vy>0){angleVelo=angleVelo+PI;}
+  angleVelo=atan2(-vy,-vx);
   
-  if(mousePressed==true){
+  if(mousePressed==true&avail>=1){
     if(holdStart==1){
       mxFirst=mouseX;
       myFirst=mouseY;
@@ -54,6 +52,7 @@ void draw(){
   }else{
     if(charge==1){
       shot=1;
+      avail--;
       charge=0;
     }
   }
@@ -68,7 +67,44 @@ void draw(){
     holdStart=1;
   }
   
-  stage(0);
+  if(goal>=1){
+    if(FX==1){
+      xStop=x;yStop=y;
+    }
+    x=xStop;y=yStop;vx=0;vy=0;
+    FX*=0.95;
+    if(FX<0.01&goal==1){
+      stageSel++;
+      goal=2;
+      start=1;
+      FX=1;
+    }
+    if(FX<0.01&goal==2){
+      goal=0;
+      FX=1;
+    }
+  }
+  
+  if(gameover>=1){
+    if(FX==1){
+      xStop=x;yStop=y;
+    }
+    x=xStop;y=yStop;vx=0;vy=0;
+    FX*=0.95;
+    if(gameover==1){FX*=0.92;}
+    if(FX<0.01&gameover==1){
+      stageSel=0;
+      gameover=2;
+      start=1;
+      FX=1;
+    }
+    if(FX<0.01&gameover==2){
+      gameover=0;
+      FX=1;
+    }
+  }
+  
+  stage(stageSel);
   
   if(coll==1){
     if(shot==0){  
@@ -77,11 +113,10 @@ void draw(){
       angleRef=angleColl*2-angleVelo;
       vx=pv*cos(angleRef)*(1-abs(cos(angleColl))*(1-e));
       vy=pv*sin(angleRef)*(1-abs(sin(angleColl))*(1-e));
-      if(pv<0.1){
-        vx=0;
-        vy=0;
+      if(pv<0.1&avail<=0&edge==0){
+        gameover=1;
       }
-      if(abs(cos(angleColl)*vx)+abs(sin(angleColl)*vy)>0.1){
+      if(abs(cos(angleColl)*vx)+abs(sin(angleColl)*vy)>0.3){
         soundBounce.rewind();
         soundBounce.play();
       }
@@ -118,6 +153,33 @@ void draw(){
   ellipse(x,y,r*2+4,r*2+4);
   fill(255);
   ellipse(x,y,r*2,r*2);
+  
+  if(goal==1){
+    noFill();
+    strokeWeight((1-FX)*width*sqrt(2));
+    stroke(#339999);
+    ellipse(width/2,height/2,width*sqrt(2),height*sqrt(2));
+  }
+  
+  if(goal==2){
+    noStroke();
+    fill(#339999);
+    ellipse(width/2,height/2,width*sqrt(2)*FX,height*sqrt(2)*FX);
+  }
+  
+  if(gameover==1){
+    strokeWeight((1-FX)*30);
+    stroke(#FFFFFF);
+    for(int cnt=-16;cnt<17;cnt++){
+      line(-10+cnt*40,-10,+650+cnt*40,+650);
+    }
+  }
+  
+  if(gameover==2){
+    noStroke();
+    fill(#FFFFFF);
+    ellipse(width/2,height/2,width*sqrt(2)*FX,height*sqrt(2)*FX);
+  }
   
   fill(255,255,255,255);
   noStroke();
