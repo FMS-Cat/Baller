@@ -1,4 +1,4 @@
-int avail=1,genesw,holdStart=1,shot,charge,coll,edge,start=1,goal,gameover,stageSel;
+int avail=1,genesw,holdStart=1,shot,charge,coll,edge,start=1,goal,gameover,stageSel,score;
 float resist=0.999,e=0.8,f=0.99;
 float x,y,r=10,vx=0,vy=0,ax=0,ay=0.02,pv,ox,oy,pox,poy,m,cx,cy,angleVelo,angleColl,angleRef,angleShot,vm,am,dist,mxFirst,myFirst,power,glow,FX=1,xStop,yStop;
 PFont hel=createFont("Helvetica Neue",12);
@@ -74,7 +74,8 @@ void draw(){
     x=xStop;y=yStop;vx=0;vy=0;
     FX*=0.95;
     if(FX<0.01&goal==1){
-      stageSel++;
+      stageSel=int(random(6));
+      score++;
       goal=2;
       start=1;
       FX=1;
@@ -91,9 +92,10 @@ void draw(){
     }
     x=xStop;y=yStop;vx=0;vy=0;
     FX*=0.95;
-    if(gameover==1){FX*=0.92;}
+    if(gameover==1){FX*=0.9;}
     if(FX<0.01&gameover==1){
       stageSel=0;
+      score=0;
       gameover=2;
       start=1;
       FX=1;
@@ -113,9 +115,7 @@ void draw(){
       angleRef=angleColl*2-angleVelo;
       vx=pv*cos(angleRef)*(1-abs(cos(angleColl))*(1-e));
       vy=pv*sin(angleRef)*(1-abs(sin(angleColl))*(1-e));
-      if(pv<0.1&avail<=0&edge==0){
-        gameover=1;
-      }
+      if(pv<0.1&avail<=0&edge==0){gameover=1;}
       if(abs(cos(angleColl)*vx)+abs(sin(angleColl)*vy)>0.3){
         soundBounce.rewind();
         soundBounce.play();
@@ -124,6 +124,8 @@ void draw(){
     }
     coll=0;
   }
+  
+  if(x<0|width<x|y<0|height<y){gameover=1;}
   
   shot=0;
   vx*=resist;vy*=resist;
@@ -154,6 +156,12 @@ void draw(){
   fill(255);
   ellipse(x,y,r*2,r*2);
   
+  fill(0,0,0,127);
+  noStroke();
+  textFont(helb);
+  textAlign(CENTER,CENTER);
+  text(score,width/2,height/2-20);
+  
   if(goal==1){
     noFill();
     strokeWeight((1-FX)*width*sqrt(2));
@@ -168,7 +176,7 @@ void draw(){
   }
   
   if(gameover==1){
-    strokeWeight((1-FX)*30);
+    strokeWeight((1-FX)*32);
     stroke(#FFFFFF);
     for(int cnt=-16;cnt<17;cnt++){
       line(-10+cnt*40,-10,+650+cnt*40,+650);
@@ -187,6 +195,10 @@ void draw(){
   textAlign(LEFT,TOP);
   text("x = "+round(x)+" , y = "+round(y),25,20);
   text("Velocity = "+float(round(sqrt(sq(vx)+sq(vy))*100))/100,25,30);
+}
+
+void keyPressed(){
+  gameover=1;
 }
 
 void stop(){

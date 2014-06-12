@@ -53,7 +53,6 @@ void goalEllipse(int objx,int objy,int objr){
     y=objy+sin(angleColl)*(r+objr+0.1);
     coll=1;edge=1;goal=1;
   }
-  
   noStroke();
   fill(255,255-glow*255,255-glow*153);
   ellipse(objx,objy,objr*2,objr*2);
