@@ -5,13 +5,13 @@ void groundSolidRect(int objx,int objy,int objwid,int objhei,int objkado0,int ob
   if(objx<x&x<objx+objwid&objy-r<y&y<objy+objhei+r){
     if(y<objy+objhei/2){y=objy-r;}
     else{y=objy+objhei+r;}
-    angleColl=PI/2;coll=1;edge=0;
+    angleColl=PI/2;coll=1;
   }
   // 横に当てた時の処理
   if(objx-r<x&x<objx+objwid+r&objy<y&y<objy+objhei){
     if(x<objx+objwid/2){x=objx-r;}
     else{x=objx+objwid+r;}
-    angleColl=0;coll=1;edge=0;
+    angleColl=0;coll=1;
   }
   
   // 角に当てた時の処理
@@ -24,7 +24,7 @@ void groundSolidRect(int objx,int objy,int objwid,int objhei,int objkado0,int ob
       angleColl=atan2((y-objy-objhei*(cnt%2)),(x-objx-objwid*(cnt/2)));
       x=objx+objwid*(cnt/2)+cos(angleColl)*(r+0.1);
       y=objy+objhei*(cnt%2)+sin(angleColl)*(r+0.1);
-      coll=1;edge=1;
+      coll=1;
     }
   }
   
@@ -38,7 +38,7 @@ void groundSolidEllipse(int objx,int objy,int objr){
     angleColl=atan2(y-objy,x-objx);
     x=objx+cos(angleColl)*(r+objr+0.1);
     y=objy+sin(angleColl)*(r+objr+0.1);
-    coll=1;edge=1;
+    coll=1;
   }
   
   noStroke();
@@ -51,7 +51,7 @@ void goalEllipse(int objx,int objy,int objr){
     angleColl=atan2(y-objy,x-objx);
     x=objx+cos(angleColl)*(r+objr+0.1);
     y=objy+sin(angleColl)*(r+objr+0.1);
-    coll=1;edge=1;goal=1;
+    goal=1;
   }
   noStroke();
   fill(255,255-glow*255,255-glow*153);

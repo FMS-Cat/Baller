@@ -1,6 +1,6 @@
 void stage(int stageNum){
   if(stageNum==-1){
-    if(start==1){x=90;y=620;start=0;avail=1;}
+    if(start==1){x=90;y=620;start=0;avail=1;bgColor[0]=51;bgColor[1]=153;bgColor[2]=153;}
     
     //box
     groundSolidRect(-100,-100,840,120,0,0,0,0);
@@ -39,9 +39,11 @@ void stage(int stageNum){
     goalEllipse(480,520,20);
   }
   
-  
+  // init
   if(stageNum==0){
-    if(start==1){x=90;y=620;start=0;avail=1;}
+    if(start==1){x=90;y=620;start=0;avail=1;bgColor[0]=51;bgColor[1]=153;bgColor[2]=153;}
+    timer-=0.0005;
+    timerPow=1;
     
     //box
     groundSolidRect(-100,-100,840,120,0,0,0,0);
@@ -52,8 +54,11 @@ void stage(int stageNum){
     goalEllipse(420,320,100);
   }
   
+  // コの字
   if(stageNum==1){
-    if(start==1){x=320;y=620;start=0;avail=1;}
+    if(start==1){x=320;y=620;start=0;avail=1;bgColor[0]=51;bgColor[1]=153;bgColor[2]=153;}
+    timer-=0.0009;
+    timerPow=1;
     
     //box
     groundSolidRect(-100,-100,840,120,0,0,0,0);
@@ -66,8 +71,11 @@ void stage(int stageNum){
     goalEllipse(160,200,80);
   }
   
+  // H2O? (Dark)
   if(stageNum==2){
-    if(start==1){x=320;y=620;start=0;avail=1;}
+    if(start==1){x=320;y=620;start=0;avail=1;bgColor[0]=83;bgColor[1]=83;bgColor[2]=83;}
+    timer-=0.0015;
+    timerPow=3;
     
     groundSolidRect(-100,-100,840,120,0,0,0,0);
     groundSolidRect(-100,620,840,120,0,0,0,0);
@@ -79,8 +87,11 @@ void stage(int stageNum){
     groundSolidEllipse(400,320,80);
   }
   
+  // バウンド、右下
   if(stageNum==3){
-    if(start==1){x=520;y=320;start=0;avail=1;}
+    if(start==1){x=520;y=320;start=0;avail=1;bgColor[0]=51;bgColor[1]=153;bgColor[2]=153;}
+    timer-=0.0007;
+    timerPow=1;
     
     groundSolidRect(-100,-100,840,120,0,0,0,0);
     groundSolidRect(-100,620,840,120,0,0,0,0);
@@ -93,8 +104,12 @@ void stage(int stageNum){
     goalEllipse(520,520,50);
   }
   
+  // まるに反射
   if(stageNum==4){
-    if(start==1){x=160;y=620;start=0;avail=1;}
+    if(start==1){x=160;y=620;start=0;avail=1;bgColor[0]=51;bgColor[1]=153;bgColor[2]=153;}
+    timer-=0.0017;
+    timerPow=1;
+    
     goalEllipse(440,80,120);
     groundSolidEllipse(640,640,320);
     groundSolidEllipse(960,0,480);
@@ -107,8 +122,12 @@ void stage(int stageNum){
     groundSolidRect(300,0,40,320,0,1,0,1);
   }
   
+  // 3x3 (Dark)
   if(stageNum==5){
-    if(start==1){x=320;y=620;start=0;avail=1;}
+    if(start==1){x=320;y=620;start=0;avail=1;bgColor[0]=83;bgColor[1]=83;bgColor[2]=83;}
+    timer-=0.0015;
+    timerPow=3;
+    
     groundSolidRect(-80,-80,160,160,0,0,0,1);
     groundSolidRect(560,-80,160,160,0,1,0,0);
     groundSolidRect(-80,560,160,160,0,0,1,0);
@@ -122,5 +141,152 @@ void stage(int stageNum){
     
     groundSolidRect(240,240,160,160,1,1,1,1);
     goalEllipse(320,160,60);
+  }
+  
+  // plus
+  if(stageNum==6){
+    if(start==1){x=160;y=620;start=0;avail=1;bgColor[0]=51;bgColor[1]=153;bgColor[2]=153;}
+    timer-=0.001;
+    timerPow=1;
+    
+    groundSolidRect(-100,-100,840,120,0,0,0,0);
+    groundSolidRect(-100,620,840,120,0,0,0,0);
+    groundSolidRect(-100,-100,120,840,0,0,0,0);
+    groundSolidRect(620,-100,120,840,0,0,0,0);
+    
+    groundSolidRect(240,300,160,40,1,1,1,1);
+    groundSolidRect(300,240,40,160,1,1,1,1);
+    
+    goalEllipse(440,200,80);
+  }
+  
+  // U
+  if(stageNum==7){
+    if(start==1){x=160;y=620;start=0;avail=1;bgColor[0]=51;bgColor[1]=153;bgColor[2]=153;}
+    timer-=0.001;
+    timerPow=1;
+    
+    groundSolidRect(-100,-100,840,120,0,0,0,0);
+    groundSolidRect(-100,620,840,120,0,0,0,0);
+    groundSolidRect(-100,-100,120,840,0,0,0,0);
+    groundSolidRect(620,-100,120,840,0,0,0,0);
+    
+    groundSolidRect(290,0,60,320,0,1,0,1);
+    
+    goalEllipse(480,200,80);
+  }
+  
+  // Bubble
+  if(stageNum==8){
+    if(start==1){x=540;y=620;start=0;avail=1;bgColor[0]=51;bgColor[1]=153;bgColor[2]=153;}
+    timer-=0.001;
+    timerPow=1;
+    
+    goalEllipse(0,640,120);
+    
+    groundSolidRect(-100,-100,840,120,0,0,0,0);
+    groundSolidRect(-100,620,840,120,0,0,0,0);
+    groundSolidRect(-100,-100,120,840,0,0,0,0);
+    groundSolidRect(620,-100,120,840,0,0,0,0);
+    
+    groundSolidEllipse(320,-160,540);
+    groundSolidEllipse(320,640,160);
+  }
+  
+  // コの字(2)
+  if(stageNum==9){
+    if(start==1){x=440;y=620;start=0;avail=1;bgColor[0]=51;bgColor[1]=153;bgColor[2]=153;}
+    timer-=0.001;
+    timerPow=1;
+    
+    groundSolidRect(-100,-100,840,120,0,0,0,0);
+    groundSolidRect(-100,620,840,120,0,0,0,0);
+    groundSolidRect(-100,-100,120,840,0,0,0,0);
+    groundSolidRect(620,-100,120,840,0,0,0,0);
+    
+    groundSolidRect(0,220,520,40,0,0,1,1);
+    
+    goalEllipse(120,120,80);
+  }
+  
+  // 左上右下バブル
+  if(stageNum==10){
+    if(start==1){x=140;y=620;start=0;avail=1;bgColor[0]=51;bgColor[1]=153;bgColor[2]=153;}
+    timer-=0.001;
+    timerPow=1;
+    
+    goalEllipse(640,0,320);
+    
+    groundSolidRect(-100,-100,840,120,0,0,0,0);
+    groundSolidRect(-100,620,840,120,0,0,0,0);
+    groundSolidRect(-100,-100,120,840,0,0,0,0);
+    groundSolidRect(620,-100,120,840,0,0,0,0);
+    
+    groundSolidEllipse(0,0,420);
+    groundSolidEllipse(640,640,420);
+  }
+  
+  // ボールの下に縦板
+  if(stageNum==11){
+    if(start==1){x=140;y=620;start=0;avail=1;bgColor[0]=51;bgColor[1]=153;bgColor[2]=153;}
+    timer-=0.001;
+    timerPow=1;
+    
+    groundSolidRect(-100,-100,840,120,0,0,0,0);
+    groundSolidRect(-100,620,840,120,0,0,0,0);
+    groundSolidRect(-100,-100,120,840,0,0,0,0);
+    groundSolidRect(620,-100,120,840,0,0,0,0);
+    
+    groundSolidRect(260,240,40,160,1,1,1,1);
+    
+    goalEllipse(320,160,50);
+  }
+  
+  // ボールの下に横板
+  if(stageNum==12){
+    if(start==1){x=320;y=620;start=0;avail=1;bgColor[0]=51;bgColor[1]=153;bgColor[2]=153;}
+    timer-=0.001;
+    timerPow=1;
+    
+    groundSolidRect(-100,-100,840,120,0,0,0,0);
+    groundSolidRect(-100,620,840,120,0,0,0,0);
+    groundSolidRect(-100,-100,120,840,0,0,0,0);
+    groundSolidRect(620,-100,120,840,0,0,0,0);
+    
+    groundSolidRect(240,240,160,40,1,1,1,1);
+    
+    goalEllipse(320,120,80);
+  }
+  
+  // エッジ反射 (Dark)
+  if(stageNum==13){
+    if(start==1){x=120;y=620;start=0;avail=1;bgColor[0]=83;bgColor[1]=83;bgColor[2]=83;}
+    timer-=0.0013;
+    timerPow=4;
+    
+    groundSolidRect(-100,-100,840,120,0,0,0,0);
+    groundSolidRect(-100,620,840,120,0,0,0,0);
+    groundSolidRect(-100,-100,120,840,0,0,0,0);
+    groundSolidRect(620,280,120,840,0,0,0,0);
+    
+    groundSolidRect(0,280,200,40,0,0,1,1);
+    groundSolidRect(440,280,200,40,1,1,0,0);
+    
+    goalEllipse(120,200,40);
+  }
+  
+  // 落下 (Dark)
+  if(stageNum==14){
+    if(start==1){x=160;y=200;start=0;avail=1;bgColor[0]=83;bgColor[1]=83;bgColor[2]=83;}
+    timer-=0.0015;
+    timerPow=4;
+    
+    groundSolidRect(-100,-100,840,120,0,0,0,0);
+    groundSolidRect(-100,-100,120,840,0,0,0,0);
+    groundSolidRect(620,-100,120,840,0,0,0,0);
+    
+    groundSolidRect(0,200,400,40,0,0,1,1);
+    
+    goalEllipse(320,640,80);
   }
 }
