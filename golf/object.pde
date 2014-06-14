@@ -48,9 +48,6 @@ void groundSolidEllipse(int objx,int objy,int objr){
 
 void goalEllipse(int objx,int objy,int objr){
   if(dist(x,y,objx,objy)<r+objr){
-    angleColl=atan2(y-objy,x-objx);
-    x=objx+cos(angleColl)*(r+objr+0.1);
-    y=objy+sin(angleColl)*(r+objr+0.1);
     goal=1;
   }
   noStroke();

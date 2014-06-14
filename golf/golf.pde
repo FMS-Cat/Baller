@@ -1,6 +1,6 @@
 int avail=1,genesw,holdStart=1,shot,charge,coll,start=1,goal=0,gameover,stageSel,score;
 float resist=0.999,e=0.8,f=0.99;
-float x,y,r=10,vx=0,vy=0,ax=0,ay=0.02,pv,ox,oy,pox,poy,m,cx,cy,angleVelo,angleColl,angleRef,angleShot,vm,am,dist,mxFirst,myFirst,power,glow,FX=1,xStop,yStop,timer=0.999999,timerStop,timerPow;
+float x,y,r=10,vx=0,vy=0,ax=0,ay=0.1,pv,ox,oy,pox,poy,m,cx,cy,angleVelo,angleColl,angleRef,angleShot,vm,am,dist,mxFirst,myFirst,power,glow,FX=1,xStop,yStop,timer=0.999999,timerStop,timerPow;
 int[] bgColor={51,153,153};
 PFont hel=createFont("Helvetica Neue",12);
 PFont helb=createFont("Helvetica Neue",96);
@@ -13,7 +13,7 @@ AudioPlayer soundBounce,soundSmash,soundDead,soundScore;
 void setup(){
   
   size(640,640);
-  frameRate(320);
+  frameRate(120);
   
   minim = new Minim(this);
   soundBounce=minim.loadFile("bounce.wav");
@@ -61,8 +61,8 @@ void draw(){
   }
   
   if(shot==1){
-    vx=power*cos(angleShot)*0.03;
-    vy=power*sin(angleShot)*0.03;
+    vx=power*cos(angleShot)*0.06;
+    vy=power*sin(angleShot)*0.06;
     soundBounce.rewind();
     soundBounce.play();
     soundSmash.rewind();
@@ -82,6 +82,9 @@ void draw(){
     FX*=0.95;
     if(FX<0.01&goal==1){
       stageSel=int(random(15));
+//      stageSel=int(-random(5)-1);
+//      stageSel=12;
+      if(score%10==9){stageSel=int(-random(5)-1);}
       score++;
       timer=1;
       goal=2;
@@ -104,7 +107,6 @@ void draw(){
     }
     x=xStop;y=yStop;timer=timerStop;vx=0;vy=0;
     FX*=0.95;
-    if(gameover==1){FX*=0.9;}
     if(FX<0.01&gameover==1){
       stageSel=0;
       score=0;
@@ -128,7 +130,7 @@ void draw(){
       angleRef=angleColl*2-angleVelo;
       vx=pv*cos(angleRef)*(1-abs(cos(angleColl))*(1-e));
       vy=pv*sin(angleRef)*(1-abs(sin(angleColl))*(1-e));
-      if(pv<0.1&avail<=0){gameover=1;}
+      if(pv<0.1&avail<=0&goal==0){gameover=1;}
       if(abs(cos(angleColl)*vx)+abs(sin(angleColl)*vy)>0.3){
         soundBounce.rewind();
         soundBounce.play();
@@ -138,9 +140,13 @@ void draw(){
     coll=0;
   }
   
-  if(timer<=0.004){gameover=1;}
+  timer=pow(timer,timerPow);
+  if(timer*60*5<1){gameover=1;}
+  timer=pow(timer,1/timerPow);
   
   if(x<0|width<x|y<0|height<y){gameover=1;}
+  
+  if(goal!=0){gameover=0;}
   
   shot=0;
   vx*=resist;vy*=resist;
@@ -177,7 +183,7 @@ void draw(){
   noStroke();
   textFont(helb);
   textAlign(CENTER,CENTER);
-  text(score,width/2-2,height/2-15);
+  text(score,width/2-1,height/2-15);
   
   if(gameover==2|goal==2){timer=0.999999;}
   
@@ -234,7 +240,7 @@ void draw(){
   textAlign(LEFT,TOP);
   text("x = "+round(x)+" , y = "+round(y),5,0);
   text("Velocity = "+float(round(sqrt(sq(vx)+sq(vy))*100))/100,5,10);
-  text(frameRate,5,20);
+  text("FPS = "+frameRate,5,20);
 }
 
 void keyPressed(){
