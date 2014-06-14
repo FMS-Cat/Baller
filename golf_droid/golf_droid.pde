@@ -68,10 +68,10 @@ void draw(){
     }
     FX*=0.95;
     if(FX<0.01&goal==1){
-      stageSel=int(random(15));
+      stageSel=int(random(14));
 //      stageSel=int(-random(5)-1);
 //      stageSel=12;
-      if(score%10==9){stageSel=int(-random(5)-1);}
+      if(score%10==9){stageSel=int(-random(6)-1);}
       score++;
       timer=1;
       goal=2;
