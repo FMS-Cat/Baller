@@ -1,25 +1,12 @@
 int avail=1,genesw,holdStart=1,shot,charge,coll,start=1,goal=0,gameover,stageSel,score;
 float resist=0.999,e=0.8,f=0.99;
-float x,y,r=10,vx=0,vy=0,ax=0,ay=0.05,pv,ox,oy,pox,poy,m,cx,cy,angleVelo,angleColl,angleRef,angleShot,vm,am,dist,mxFirst,myFirst,power,glow,FX=1,xStop,yStop,timer=0.999999,timerStop,timerPow;
+float x,y,r=20,vx=0,vy=0,ax=0,ay=0.05,pv,ox,oy,pox,poy,m,cx,cy,angleVelo,angleColl,angleRef,angleShot,vm,am,dist,mxFirst,myFirst,power,glow,FX=1,xStop,yStop,timer=0.999999,timerStop,timerPow;
 int[] bgColor={51,153,153};
-PFont hel=createFont("Helvetica Neue",12);
-PFont helb=createFont("Helvetica Neue",96);
-
-import ddf.minim.*;
-
-Minim minim;
-AudioPlayer soundBounce,soundSmash,soundDead,soundScore;
   
 void setup(){
   
-  size(640,640);
+  size(720,1280);
   frameRate(60);
-  
-  minim = new Minim(this);
-  soundBounce=minim.loadFile("bounce.wav");
-  soundSmash=minim.loadFile("smash.wav");
-  soundDead=minim.loadFile("dead.wav");
-  soundScore=minim.loadFile("score.wav");
   
 }
 
@@ -63,12 +50,9 @@ void draw(){
   }
   
   if(shot==1){
-    vx=power*cos(angleShot)*0.05;
-    vy=power*sin(angleShot)*0.05;
-    soundBounce.rewind();
-    soundBounce.play();
-    soundSmash.rewind();
-    soundSmash.play();
+    vx=power*cos(angleShot)*0.07;
+    vy=power*sin(angleShot)*0.07;
+    // Sound
     holdStart=1;
   }
   
@@ -76,8 +60,7 @@ void draw(){
     if(FX==1){
       xStop=x;yStop=y;timerStop=timer;
       if(goal==1){
-        soundScore.rewind();
-        soundScore.play();
+        // Sound
       }
     }
     if(goal==1){
@@ -105,8 +88,7 @@ void draw(){
     if(FX==1){
       xStop=x;yStop=y;timerStop=timer;charge=0;holdStart=1;
       if(gameover==1){
-        soundDead.rewind();
-        soundDead.play();
+        // Sound
       }
     }
     if(gameover==1){
@@ -138,8 +120,7 @@ void draw(){
       vy=pv*sin(angleRef)*(1-abs(sin(angleColl))*(1-e));
       if(pv<0.1&avail<=0&goal==0){gameover=1;}
       if(abs(cos(angleColl)*vx)+abs(sin(angleColl)*vy)>0.3){
-        soundBounce.rewind();
-        soundBounce.play();
+        // Sound
       }
       println(angleColl);
     }
@@ -159,13 +140,13 @@ void draw(){
   
   if(charge==1){
     stroke(bgColor[0],bgColor[1],bgColor[2]);
-    strokeWeight(6);
+    strokeWeight(12);
     noFill();
     line(x,y,x-(power-1)*cos(angleShot),y-(power-1)*sin(angleShot));
     ellipse(x,y,power*2,power*2);
     ellipse(mxFirst,myFirst,20+sin(timer*100)*7,20+sin(timer*100)*7);
     stroke(255);
-    strokeWeight(2);
+    strokeWeight(4);
     noFill();
     line(x,y,x-(power-1)*cos(angleShot),y-(power-1)*sin(angleShot));
     ellipse(x,y,power*2,power*2);
@@ -173,23 +154,23 @@ void draw(){
     for(int cnt=0;cnt<6;cnt++){
       noStroke();
       fill(bgColor[0],bgColor[1],bgColor[2],255-cnt*32);
-      ellipse(x+(r+8+cnt*10)*cos(angleShot),y+(r+8+cnt*10)*sin(angleShot),8,8);
+      ellipse(x+(r+12+cnt*16)*cos(angleShot),y+(r+12+cnt*16)*sin(angleShot),16,16);
       fill(255,255-cnt*32);
-      ellipse(x+(r+8+cnt*10)*cos(angleShot),y+(r+8+cnt*10)*sin(angleShot),4,4);
+      ellipse(x+(r+12+cnt*16)*cos(angleShot),y+(r+12+cnt*16)*sin(angleShot),8,8);
     }
   }
   
   noStroke();
   fill(bgColor[0],bgColor[1],bgColor[2]);
-  ellipse(x,y,r*2+4,r*2+4);
+  ellipse(x,y,r*2+8,r*2+8);
   fill(255);
   ellipse(x,y,r*2,r*2);
   
   fill(0,71);
   noStroke();
-  textFont(helb);
+  textSize(192);
   textAlign(CENTER,CENTER);
-  text(score,width/2-1,height/2-15);
+  text(score,width/2-2,height/2-6);
   
   if(gameover==2|goal==2){timer=0.999999;}
   
@@ -197,16 +178,16 @@ void draw(){
   fill(0,71);
   for(int c=0;c<60;c++){
     float rr;
-    if(c<timer*60&timer*60<c+1){rr=((timer*60)%1)*5;}else if(c+1<timer*60){rr=5;}else{rr=0;}
-    ellipse(width/2+sin(PI/60*2*c)*70,height/2-cos(PI/60*2*c)*70,rr,rr);
+    if(c<timer*60&timer*60<c+1){rr=((timer*60)%1)*10;}else if(c+1<timer*60){rr=10;}else{rr=0;}
+    ellipse(width/2+sin(PI/60*2*c)*140,height/2-cos(PI/60*2*c)*140,rr,rr);
   }
   timer=pow(timer,1/timerPow);
   
   if(goal==1){
     noFill();
-    strokeWeight((1-FX)*width*sqrt(2));
+    strokeWeight((1-FX)*height*sqrt(2));
     stroke(#339999);
-    ellipse(width/2,height/2,width*sqrt(2),height*sqrt(2));
+    ellipse(width/2,height/2,height*sqrt(2),height*sqrt(2));
     if(FX<0.02){
       noStroke();
       fill(51,153,153,(0.02-FX)*255/0.01);
@@ -220,14 +201,14 @@ void draw(){
     if(FX<0.02){
       fill(51,153,153,(FX-0.01)*255/0.01);
     }
-    ellipse(width/2,height/2,width*sqrt(2)*FX,height*sqrt(2)*FX);
+    ellipse(width/2,height/2,height*sqrt(2)*FX,height*sqrt(2)*FX);
   }
   
   if(gameover==1){
-    strokeWeight((1-FX)*32);
+    strokeWeight((1-FX)*64);
     stroke(#FFFFFF);
-    for(int cnt=-16;cnt<17;cnt++){
-      line(-10+cnt*40,-10,+650+cnt*40,+650);
+    for(int cnt=-9;cnt<17;cnt++){
+      line(-10,-10+cnt*80,730,730+cnt*80);
     }
   }
   
@@ -237,12 +218,12 @@ void draw(){
     if(FX<0.02){
       fill(255,(FX-0.01)*255/0.01);
     }
-    ellipse(width/2,height/2,width*sqrt(2)*FX,height*sqrt(2)*FX);
+    ellipse(width/2,height/2,height*sqrt(2)*FX,height*sqrt(2)*FX);
   }
   
   fill(0,0,0,127);
   noStroke();
-  textFont(hel);
+  textSize(12);
   textAlign(LEFT,TOP);
   text("x = "+round(x)+" , y = "+round(y),5,0);
   text("Velocity = "+float(round(sqrt(sq(vx)+sq(vy))*100))/100,5,10);
@@ -256,10 +237,5 @@ void keyPressed(){
 }
 
 void stop(){
-  soundBounce.close();
-  soundSmash.close();
-  soundDead.close();
-  soundScore.close();
-  minim.stop();
   super.stop();
 }
